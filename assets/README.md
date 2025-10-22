@@ -1,0 +1,3 @@
+# Assets
+
+Logos, screenshots, thumbnails.
