@@ -10,6 +10,25 @@
 
 **How Self fits:** Expands Self beyond passports. Device generates a proof from Turkish ID signatures; apps verify a yes/no result for policies like residency or age without seeing raw ID data.
 
+## Quickstart
+
+- Clone: `git clone <repo> && cd <repo>`
+- Install: `<pnpm|yarn|npm> install`
+- Run: `<pnpm|yarn|npm> dev`
+
+## Env
+
+Create `.env` from `.env.example`:
+SELF_API_KEY=...
+SELF_ENV=sandbox
+
+## Milestones
+
+- [ ] v0 demo scope defined
+- [ ] Self proof verified end-to-end
+- [ ] Public demo link
+- [ ] README quickstart complete
+
 ## Updates
 
 - Week 1: <one-line + PR/thread link>
