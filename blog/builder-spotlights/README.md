@@ -33,7 +33,7 @@ This folder holds **draft spotlight posts** written by residency builders. Keep 
 - What’s next
 - Get involved (links, help wanted)
 
-## Optional Questions from the product Design Lab
+## Optional Questions from the Product Design Lab
 
 - What are you working on right now that excites you most?
 - How does zero-knowledge technology or cryptography fit into that?
