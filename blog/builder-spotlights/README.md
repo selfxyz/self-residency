@@ -33,6 +33,25 @@ This folder holds **draft spotlight posts** written by residency builders. Keep 
 - What’s next
 - Get involved (links, help wanted)
 
+## Optional Questions from the product Design Lab
+
+- What are you working on right now that excites you most?
+- How does zero-knowledge technology or cryptography fit into that?
+- What problem are you trying to solve during this residency?
+- Describe your process — how do ideas move from concept to code here?
+- What’s the biggest technical or creative challenge you’ve faced so far?
+- What does collaboration look like within the Self ecosystem?
+- Who do you imagine using Self in the real world?
+- How would you explain Self to your parents or a friend outside crypto?
+- What human problem are you actually solving?
+- How does this technology empower people, not just systems or tech?
+- What brought you to San Francisco for this residency?
+- What has surprised you most about being here?
+- How does working alongside other builders change your pace or ideas?
+- What’s a favorite moment from the past few weeks in the residency?
+- What have you learned from someone else in this cohort?
+- If you could describe the energy here in one word, what would it be?
+
 ## Review checklist (tick before PR)
 
 - [ ] One-liner is clear
