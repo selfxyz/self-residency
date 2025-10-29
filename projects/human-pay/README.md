@@ -1,13 +1,13 @@
 # HumanPay (Verifiable Multisend)
 
 **Status:** Production-ready testnet
-**What:** Compliant cross-border payments with zero-knowledge identity verification
+**What:** Onchain compliance infrastructure for token operations with zero-knowledge identity verification
 **Repo:** https://github.com/0xleal/verifiable-multisend
-**Demo:** https://humanpay.vercel.app (Coming soon)
+**Demo:** https://humanpay.vercel.app
 **Team:** @francisco
 **Contact:** @francisco
 
-**How Self fits:** Combine Self.xyz personhood proofs (passport/ID NFC verification) with ZK claims to enable compliant cross-border batch payments and token distributions. Users prove OFAC compliance, jurisdiction eligibility, and age requirements without exposing personal data on-chain.
+**How Self fits:** Combine Self.xyz personhood proofs (passport/ID NFC verification) with ZK claims to enable compliant token distributions, DAO operations, and sybil-resistant airdrops. Users prove OFAC compliance, jurisdiction eligibility, and age requirements without exposing personal data on-chain. Enables DeFi protocols to enforce compliance rules directly in smart contracts.
 
 ## Quickstart
 
@@ -58,9 +58,9 @@ CELOSCAN_API_KEY=your-celoscan-api-key (optional for verification)
 
 ## Updates
 
-- **Week 1 (Oct 20-27):** Onchain integration with self + gas optimized distribution method
-- **Week 2 (Oct 28-Nov 3):** Frontend claim flow finalized, UI polished + multichain support
-- **Week 3:** ERC20 support + mainnet deployment
+- **Week 1 (Oct 20-27):** Onchain integration with Self.xyz + gas-optimized distribution method
+- **Week 2 (Oct 28-Nov 3):** Frontend claim flow finalized, UI polished + multi-chain support (Celo + Base)
+- **Week 3:** ERC20 token selector + mainnet deployment preparation
 
 ## Deployed Contracts
 
