@@ -198,4 +198,4 @@ The `SelfVerifiedMultiSend.sol` contract uses assembly-level optimization for ba
 - **Try it:** [self-verifiable-multisend.vercel.app](https://self-verifiable-multisend.vercel.app/) (testnet)
 - **Repo:** [github.com/0xleal/verifiable-multisend](https://github.com/0xleal/verifiable-multisend)
 - **Issues/Help wanted:** Smart contract audit/check
-- **Contact:** [@0xleal](https://twitter.com/0xleal) on X
+- **Contact:** [@0x_leal](https://x.com/0x_leal) on X
