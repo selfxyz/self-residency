@@ -5,7 +5,7 @@ author: "Francisco Leal"
 project: "HumanPay"
 links:
   repo: "https://github.com/0xleal/verifiable-multisend"
-  demo: "https://humanpay.vercel.app"
+  demo: "https://self-verifiable-multisend.vercel.app/"
   video: ""
   contact: "@0xleal"
 self:
@@ -25,7 +25,7 @@ stack:
   ]
 ---
 
-![Hero](./assets/hero.jpg)
+![Hero](./assets/hero.png)
 
 ## What is HumanPay in one line
 
@@ -33,21 +33,19 @@ Onchain compliance infrastructure for token operations—combining zero-knowledg
 
 ## Why this matters
 
-Decentralized protocols need compliance, but existing solutions force an impossible trade-off. Token distributions get exploited by bots. Airdrops lose millions to sybil attackers. Geographic restrictions can't be enforced onchain. Meanwhile, centralized platforms like centralized exchanges offer compliance but require full KYC, custody your funds, and collect invasive personal data.
+Decentralized protocols need compliance, but existing solutions force an impossible trade-off. Token distributions get exploited by bots. Airdrops lose millions to sybil attackers. Geographic restrictions can't be enforced onchain. Meanwhile, centralized platforms like centralized exchanges offer compliance but require full KYC, custody your funds, and collect invasive personal data. Not to mention the cost associated with integrating a standard KYC process (up to $5/user).
 
-The gap: DeFi protocols and onchain operations need to prove compliance—OFAC screening, jurisdiction controls, proof of personhood—without relying on centralized intermediaries or storing personal data onchain. You can't launch a compliant token distribution today without either (1) using a centralized platform that collects KYC data, or (2) accepting regulatory risk by ignoring compliance entirely.
+You can't run a compliant token distribution today without either (1) using a centralized platform that collects KYC data, or (2) accepting regulatory risk by ignoring compliance entirely.
 
 We needed infrastructure that could enforce compliance rules directly in smart contracts, using cryptographic proofs instead of trusting third parties.
 
 ## Why identity (and why Self)
 
-The breakthrough came when we realized identity verification doesn't require data collection. Self.xyz enables cryptographic proof of compliance using government-issued documents, but the personal information never leaves the user's device.
+The breakthrough came when we realized identity verification doesn't require data collection and that it can be verified onchain, enabling smart contract enforcement of these requirements.
 
-**The moment identity became critical:** When protocols need to distribute tokens compliantly—whether it's DAO treasury operations, token launches, or community rewards—they face a fundamental problem: how do you enforce OFAC screening, prevent sybil attacks, and restrict jurisdictions without collecting personal data or trusting centralized intermediaries? Pure DeFi has no compliance layer, and centralized solutions defeat the purpose of building onchain.
+By leveraging Self.xyz we can enable cryptographic proof of compliance onchain using government-issued documents, without the personal information ever leaving the user's device. The app cryptographically verifies the government's digital signature on the passport (proving the document is authentic), generates a zero-knowledge proof of specific attributes (like "over 18" and "not from a sanctioned country"), and submits only the proof on-chain. The smart contract gets a cryptographic **yes** or **no**
 
-Self solves this by letting users scan their passport's NFC chip with the Self.xyz mobile app. The app cryptographically verifies the government's digital signature on the passport (proving the document is authentic), generates a zero-knowledge proof of specific attributes (like "over 18" and "not from a sanctioned country"), and submits only the proof on-chain. The smart contract gets a cryptographic **yes** or **no**—never a name, birthdate, address, or passport number.
-
-**Proofs used:** OFAC sanctions screening, age verification (18+), country/nationality verification, document authenticity (government signature validation), liveness detection (prevents spoofing)
+**Proofs used:** OFAC sanctions screening, age verification (18+), country/nationality verification, document authenticity (government signature validation).
 
 **Verifier learns:** Binary yes/no—the smart contract only knows "this address passed verification" with a 30-day expiry timestamp. Zero personal data touches the blockchain.
 
@@ -64,18 +62,18 @@ For batch token distributions where the sender must prove they're a verified hum
 **Flow:**
 
 1. Sender verifies identity once via Self.xyz (valid 30 days)
-2. Upload CSV file: `address,amount` for all recipients
-3. Execute single on-chain transaction → all recipients paid simultaneously
+2. Upload CSV file (or copy/paste values): `address,amount` for all recipients
+3. Execute single on-chain transaction → all recipients paid simultaneously at a very low cost
 4. Recipients receive funds directly to their wallets (no claiming step, no coordination needed)
 
 **Technical implementation:**
 
 - `SelfVerifiedMultiSend.sol` checks sender verification via `IVerificationRegistry`
-- Assembly-optimized loops minimize gas costs (can distribute to hundreds of addresses for ~$0.50 total gas)
-- Works with both ETH and ERC20 tokens
+- Assembly-optimized loops minimize gas costs (Allowing up to a thousand recipients at a linear cost per user ~$0.01)
+- Works with both native tokens and ERC20 tokens
 - Non-custodial: sender approves tokens, contract immediately distributes them
 
-**Use case:** A DAO treasury wants to distribute 10,000 USDC to 50 contributors. Instead of 50 individual transactions (50 × transaction fees + manual coordination), execute one transaction with proof that the sender is a verified, compliant address. Total cost: ~$0.50 in gas.
+**Use case:** A DAO treasury wants to distribute 10,000 USDC to 1000 contributors. Instead of 1000 individual transactions (1000 × transaction fees + manual coordination), execute one transaction. Total cost: ~$10 in gas.
 
 ### 2. Airdrop Mode (Recipient Verification)
 
@@ -83,11 +81,12 @@ For token distributions where each recipient must prove compliance before claimi
 
 **Flow:**
 
-1. Creator generates merkle tree with eligible addresses and amounts
-2. Creator deposits tokens to `SelfVerifiedAirdrop.sol` with merkle root
-3. Recipients verify identity via Self.xyz (must pass OFAC, jurisdiction, age checks)
-4. Each recipient claims their allocation using merkle proof
-5. Smart contract enforces: one claim per person (passport-backed), compliance requirements met, valid merkle proof
+1. Creator uploads the data to the platform
+2. App generates merkle tree with eligible addresses and amounts
+3. Creator deposits tokens to `SelfVerifiedAirdrop.sol` with merkle root
+4. Recipients verify identity via Self.xyz (must pass OFAC, jurisdiction, age checks)
+5. Each recipient claims their allocation using merkle proof
+6. Smart contract enforces: one claim per person (passport-backed), compliance requirements met, valid merkle proof
 
 **Technical implementation:**
 
@@ -111,13 +110,13 @@ Self.xyz verification happens on Celo (where the Hub V2 contract lives), but DeF
 **Relay flow:**
 
 1. User verifies on Celo (Self.xyz proof submitted to `CeloVerificationRegistry`)
-2. Anyone can relay verification to Base (relayer pays ~$0.005 CELO for Hyperlane fees)
+2. Anyone can relay verification to Base (relayer pays Hyperlane fees)
 3. Hyperlane delivers message in 1-5 minutes
 4. `CrossChainVerificationRegistry` on Base receives (account address, expiry timestamp)
 5. User's verification now valid on both Celo and Base for 30 days
 6. Trusted sender mechanism ensures only authorized Celo registries can update Base registry
 
-**Why this matters:** Verify once on Celo, operate compliantly on any supported chain. A protocol on Base can enforce OFAC screening without building its own identity layer or trusting a centralized service. Verification expiry stays synchronized (same 30-day timestamp preserved cross-chain).
+**Why this matters:** Verify once on Celo, operate compliantly on any supported chain. A protocol on Base can enforce OFAC screening without building its own identity layer or trusting a centralized service. Verification expiry stays synchronized (same 30-day timestamp preserved cross-chain). An alternative solution would be to host a smart contract that holds ETH/Celo in order to pay for the hyperlane message so that it can be included in the verification system, without requiring a separate transaction.
 
 ## What shipped
 
@@ -152,38 +151,17 @@ Self.xyz verification happens on Celo (where the Hub V2 contract lives), but DeF
 - Base Sepolia integration (testnet)
 
 **Repo:** [github.com/0xleal/verifiable-multisend](https://github.com/0xleal/verifiable-multisend)
-**Live demo:** [humanpay.vercel.app](https://humanpay.vercel.app) (testnet)
+**Live demo:** [self-verifiable-multisend.vercel.app](https://self-verifiable-multisend.vercel.app/) (testnet)
 
 ## What's next
 
-**Immediate (next 2-4 weeks):**
-
 - [ ] Mainnet deployment (Celo mainnet + Base mainnet)
 - [ ] ERC20 token selector in frontend (currently requires manual address input)
-- [ ] Airdrop mode frontend (creator UI + claimer UI)—contracts are done, UI in progress
-- [ ] Gas cost analytics dashboard (show savings vs. individual transfers)
-
-**Near-term (1-2 months):**
-
-- [ ] Additional chain support (Arbitrum, Optimism, Polygon)
-- [ ] Stablecoin-optimized flows (USDC/USDT for DAO treasury operations)
-- [ ] Recurring distribution scheduling (automated monthly contributor payments)
-- [ ] Batch verification relay (relay multiple verifications in one transaction)
-
-**Long-term vision:**
-
-- [ ] New compliance primitives: verified governance voting, verified staking, verified lending access
-- [ ] API for programmatic distributions (integrate into existing DAO tooling)
-- [ ] DAO treasury integrations (Gnosis Safe plugin, Aragon integration, Tally integration)
-- [ ] Compliance-as-a-service SDK (plug HumanPay verification into any protocol)
-- [ ] Regional compliance configs (EU-specific, APAC-specific verification rules)
-
-**Why these priorities:** Mainnet deployment and ERC20 selector unblock real-world protocol usage. Airdrop frontend completes sybil-resistant token launches. Multi-chain expansion addresses the "I want compliant operations on Arbitrum/Optimism" problem. Long-term focus is building reusable compliance primitives for the entire DeFi ecosystem.
 
 ## Technical highlights worth mentioning
 
 **Gas optimization:**
-The `SelfVerifiedMultiSend.sol` contract uses assembly-level optimization for batch operations. Instead of a standard Solidity loop, we manually manage memory and use inline assembly to minimize storage reads and gas costs. Distributing to 100 addresses costs ~$0.50 in gas vs. ~$50 for individual transactions.
+The `SelfVerifiedMultiSend.sol` contract uses assembly-level optimization for batch operations. Instead of a standard Solidity loop, we manually manage memory and use inline assembly to minimize storage reads and gas costs. Distributing to 100 addresses costs ~$1 in gas vs. ~$10-15 for individual transactions and handles higher number of recipients.
 
 **Security considerations:**
 
@@ -192,12 +170,6 @@ The `SelfVerifiedMultiSend.sol` contract uses assembly-level optimization for ba
 - Non-custodial throughout: sender approves tokens, contract immediately distributes
 - Cross-chain trusted sender enforcement (only whitelisted Celo registries can relay)
 - Comprehensive test coverage (85+ tests including edge cases and cross-chain scenarios)
-
-**Why Celo:**
-Mobile-first design (Self.xyz verification happens via mobile app, Celo optimizes for mobile wallets), low transaction fees (critical for batch distributions and gas-optimized operations), stablecoin-native (cUSD, cEUR for treasury operations), fast block times (5 seconds vs. Ethereum's 12), and it's where Self.xyz Hub V2 is deployed.
-
-**Self.xyz integration specifics:**
-We use Self.xyz Hub V2 on Celo Sepolia (`0x16ECBA51e18a4a7e61fdC417f0d47AFEeDfbed74`). Our contracts extend `SelfVerificationRoot` which implements the `customVerificationHook` callback. When a user submits a valid proof, the Hub calls our hook with the verified attributes, and we store `expiresAt = block.timestamp + 30 days`. The `userIdentifier` from Self.xyz maps directly to the user's Ethereum address.
 
 ## Lessons learned
 
@@ -211,8 +183,7 @@ We use Self.xyz Hub V2 on Celo Sepolia (`0x16ECBA51e18a4a7e61fdC417f0d47AFEeDfbe
 **What was harder than expected:**
 
 - Hyperlane message delivery is non-deterministic (1-5 minutes). We had to build retry logic and clear status indicators in the UI.
-- Self.xyz config IDs are opaque bytes32 hashes—took iteration to understand the config generation flow at [tools.self.xyz](https://tools.self.xyz)
-- 30-day expiry adds UX friction (users must re-verify monthly), but it's necessary for ongoing compliance. We're exploring renewal notifications.
+- 30-day expiry adds UX friction (users must re-verify monthly), but it's necessary for ongoing compliance.
 - Testing cross-chain flows requires running Hyperlane relayers locally or using testnets (slower iteration)
 
 **What surprised us:**
@@ -224,30 +195,7 @@ We use Self.xyz Hub V2 on Celo Sepolia (`0x16ECBA51e18a4a7e61fdC417f0d47AFEeDfbe
 
 ## Get involved
 
-**We're looking for:**
-
-- **Protocol integrators:** DeFi protocols, DAOs, token projects needing compliant onchain operations (airdrops, treasury distributions, governance)
-- **Contributors:** Frontend devs (React/Next.js), Solidity devs (gas optimization, new compliance primitives), DevRel (documentation, tutorials)
-- **Testers:** Try the testnet demo, report bugs, suggest UX improvements
-- **Chain partners:** Help deploy to Arbitrum, Optimism, Polygon (coordinate Hyperlane configs)
-- **Use case explorers:** What other onchain operations need compliance? (lending protocols, governance voting, staking?)
-
-**How to contribute:**
-
-- **Try it:** [humanpay.vercel.app](https://humanpay.vercel.app) (testnet)
+- **Try it:** [self-verifiable-multisend.vercel.app](https://self-verifiable-multisend.vercel.app/) (testnet)
 - **Repo:** [github.com/0xleal/verifiable-multisend](https://github.com/0xleal/verifiable-multisend)
-- **Issues/Help wanted:** Check GitHub Issues for "good first issue" tags
-- **Contact:** [@0xleal](https://twitter.com/0xleal) on X or open a GitHub discussion
-
-**Priority areas:**
-
-1. Airdrop mode frontend (figma designs exist, need implementation)
-2. Multi-chain deployment guides (documentation for deploying to new chains)
-3. New compliance primitives (verified voting, verified staking, verified lending)
-4. Use case templates (CSV templates for common scenarios: DAO distributions, token launches, community rewards)
-
----
-
-**Why we built this:** Decentralized protocols need compliance, but existing solutions require trusting centralized intermediaries or collecting invasive personal data. Zero-knowledge identity infrastructure enables onchain compliance without sacrificing decentralization or privacy. This is open-source tooling for the future of compliant DeFi—built for token distributions, DAO operations, regulatory-compliant launches, and sybil-resistant protocols.
-
-**Questions?** Open a GitHub issue or reach out to [@0xleal](https://twitter.com/0xleal).
+- **Issues/Help wanted:** Smart contract audit/check
+- **Contact:** [@0xleal](https://twitter.com/0xleal) on X

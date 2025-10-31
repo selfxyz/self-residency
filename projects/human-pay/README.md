@@ -14,8 +14,8 @@
 - Clone: `git clone https://github.com/0xleal/verifiable-multisend.git && cd verifiable-multisend`
 - Install frontend: `cd web && npm install`
 - Install contracts: `cd contracts && npm install`
-- Run frontend: `cd web && npm run dev`
 - Deploy contracts: `cd contracts && npx hardhat run scripts/deploy-self-verified-drop-celo-sepolia.ts --network celo-sepolia`
+- Run frontend: `cd web && npm run dev`
 
 ## Env
 
@@ -53,14 +53,14 @@ CELOSCAN_API_KEY=your-celoscan-api-key (optional for verification)
 - [x] Gas-optimized assembly batch operations
 - [x] Public demo link (Vercel deployment)
 - [x] Airdrop mode frontend (creator + claimer UI)
-- [ ] ERC20 token support in frontend (USDC, cUSD, USDT)
+- [x] ERC20 token support in frontend (USDC, cUSD, USDT)
 - [ ] Mainnet deployment (Celo, Ethereum, Base, Optimism)
 
 ## Updates
 
-- **Week 1 (Oct 20-27):** Onchain integration with Self.xyz + gas-optimized distribution method
-- **Week 2 (Oct 28-Nov 3):** Frontend claim flow finalized, UI polished + multi-chain support (Celo + Base)
-- **Week 3:** ERC20 token selector + mainnet deployment preparation
+- **Week 1 (Oct 13-19):** Onchain integration with Self.xyz + gas-optimized distribution method
+- **Week 2 (Oct 20-26):** Frontend claim flow finalized, UI polished + multi-chain support (Celo + Base)
+- **Week 3 (Oct 27-Nov 2:** ERC20 token selector + mainnet deployment preparation
 
 ## Deployed Contracts
 
@@ -69,7 +69,6 @@ CELOSCAN_API_KEY=your-celoscan-api-key (optional for verification)
 - Registry: `0x9f0eA3fc541415BaacED50dacb06FFdc7ADced72`
 - MultiSend: `0x5787B4FDcb1437Cc6fcEFAb845924E1697ed5fE2`
 - Airdrop: `0x120e3798B2284f875659813101BB984D56c36022`
-- Self.xyz Identity Hub V2: `0x16ECBA51e18a4a7e61fdC417f0d47AFEeDfbed74`
 - Block Explorer: https://sepolia.celoscan.io
 
 **Base Sepolia (Testnet):**
