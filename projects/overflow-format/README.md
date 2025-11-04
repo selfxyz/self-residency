@@ -2,7 +2,9 @@
 
 **What:** Fix TD1 (ID card) MRZ scanning for document numbers exceeding 9 characters using ICAO 9303 overflow format
 
-**Status:** iOS implementation complete and tested. Android implementation complete. NFC functionality pending validation via TestFlight.
+**Status:** iOS implementation complete and tested. NFC functionality pending validation via TestFlight.
+
+**PR**: https://github.com/selfxyz/self/pull/1337
 
 **Contact:** @armankolozyan (https://armankolozyan.com)
 
