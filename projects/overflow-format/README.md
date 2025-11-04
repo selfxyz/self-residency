@@ -6,8 +6,6 @@
 
 **PR**: https://github.com/selfxyz/self/pull/1337
 
-**Contact:** @armankolozyan (https://armankolozyan.com)
-
 **How Self fits:** Enables Self to scan ID cards from any country using TD1 format with document numbers exceeding 9 characters (Belgium, Portugal, Spain, ...). Essential for NFC chip authentication (BAC keys) which requires the full untruncated document number.
 
 ## Context
@@ -33,7 +31,7 @@ This case was discovered when testing Self with a Belgian ID card that failed to
 
 This overflow format is used by ID cards worldwide when document numbers exceed 9 characters, affecting multiple countries including Belgium, Portugal, Spain, and others. Without proper overflow handling, these ID cards cannot be scanned in Self, and even if scanned, the truncated document number would cause NFC chip authentication to fail.
 
-## Problem
+## Problems
 
 Three critical issues were identified with the existing MRZ validation logic:
 
@@ -56,7 +54,7 @@ The initial implementation was [stripping](https://github.com/selfxyz/self/blob/
 
 **Result**: NFC authentication would fail because the modified document number wouldn't match the one stored in the chip.
 
-## Solution
+## The solution
 
 ### Changes in `LiveMRZScannerView.swift`
 
@@ -113,4 +111,4 @@ private func mapVisionResultToDictionary(_ result: QKMRZResult) -> [String: Any]
 
 ## Contact
 
-For questions or issues related to this implementation, please contact: **@armankolozyan** (https://armankolozyan.com)
+For questions or issues related to this implementation, please contact **@armankolozyan** on Telegram (https://armankolozyan.com).
