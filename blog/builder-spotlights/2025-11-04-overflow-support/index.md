@@ -26,7 +26,7 @@ Travel documents use different MRZ formats depending on the document type. Passp
 
 This case was discovered when testing Self with a Belgian ID card that failed to scan properly. The MRZ scanner would detect the text but validation consistently failed. Upon investigation on an iOS device, it was determined that the existing MRZ parsing library (QKMRZParser) does not correctly handle the TD1 overflow format defined in ICAO 9303 standard. This overflow format is used by ID cards worldwide when document numbers exceed 9 characters, affecting multiple countries including Belgium, Portugal, Spain, and others. Without proper overflow handling, these ID cards cannot be scanned in Self, and even if scanned, the truncated document number would cause NFC chip authentication to fail.
 
-## Problem
+## Problems
 
 The ICAO 9303 standard defines how document numbers exceeding 9 characters should be encoded in TD1 format. According to the specification:
 
@@ -42,7 +42,7 @@ Three critical issues were identified in the current implementation:
 
 3. **Stripping Characters** - The initial implementation was [stripping](https://github.com/selfxyz/self/blob/ee3a546469355cd12f30f48b103c157ff51d8f97/app/ios/LiveMRZScannerView.swift#L113) the first 3 characters from the document number without any ICAO specification basis, breaking NFC authentication.
 
-## Solution
+## The solution
 
 The solution bypasses QKMRZParser's validation entirely for TD1 overflow cases. Instead of relying on the parser, we:
 
